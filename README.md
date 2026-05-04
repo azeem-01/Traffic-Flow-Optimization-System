@@ -138,7 +138,7 @@ git clone https://github.com/YOUR_USERNAME/Traffic-Flow-Optimization-System.git
 ```
 2. Open Visual Studio → **Open a project or solution**
 3. Open the `.sln` file in the project folder
-4. Place car images in `Cars/` folder inside the output directory (`Debug/` or `Release/`)
+4. Place car images in `Cars/` folder inside it.
 5. Build and run (`Ctrl + F5`)
 
 ### Controls
