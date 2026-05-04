@@ -6,7 +6,9 @@
 
 ## 📸 Preview
 
-![Traffic Flow Simulation UI](assets/final_UI.png)
+![Traffic Flow Simulation UI]<img width="1234" height="662" alt="final UI" src="https://github.com/user-attachments/assets/7f7bd8e7-94f4-43a6-ab6b-9624b6117319" />
+
+
 
 ---
 
@@ -20,7 +22,8 @@ The system models a city's road network as a **directed weighted graph** and sim
 
 ## 🗺️ System Architecture
 
-![UML Class Diagram](assets/UML.png)
+![UML Class Diagram]<img width="840" height="1346" alt="UML" src="https://github.com/user-attachments/assets/0bca3305-77d1-42a2-9542-ae206a462b82" />
+
 
 The system is organized into five layers:
 
@@ -136,8 +139,8 @@ For V=36, E=120, N vehicles: each full tick ≈ 1296N operations — well within
 ```bash
 git clone https://github.com/YOUR_USERNAME/Traffic-Flow-Optimization-System.git
 ```
-2. Open Visual Studio → **Open a project or solution**
-3. Open the `.sln` file in the project folder
+2. Open Visual Studio → **Create New project**
+3. Place all .h files in the folder after declaring proper name.
 4. Place car images in `Cars/` folder inside it.
 5. Build and run (`Ctrl + F5`)
 
