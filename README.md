@@ -79,26 +79,26 @@ min Σ [ 0.5 * Q_ij(t) + 0.5 * (f_ij/c_ij)² ]
 Traffic-Flow-Optimization-System/
 │
 ├── src/
-│   ├── Observer.h          # Pure abstract observer interface
-│   ├── Subject.h           # Observer list management base class
-│   ├── Vehicle.h           # Vehicle data struct
-│   ├── Road.h              # Directed edge with BPR, queue, signal logic
-│   ├── Intersection.h      # Graph node with adaptive signal control
-│   ├── Graph.h             # Adjacency list + Dijkstra + edge weight update
-│   ├── Queue.h             # Custom linked-list queue ADT
-│   ├── Initializer.h       # Builds city grid, hands to Manager
-│   ├── Manager.h           # Drives tick loop, owns vehicles, is an Observer
-│   ├── GUIObserver.h       # Native C++ bridge to managed Windows Forms
-│   └── trafficSimulation.h # Windows Forms GUI
+│   ├── Observer.h              # Pure abstract observer interface
+│   ├── Subject.h               # Observer list management base class
+│   ├── Vehicle.h               # Vehicle data struct
+│   ├── Road.h                  # Directed edge with BPR, queue, signal logic
+│   ├── Intersection.h          # Graph node with adaptive signal control
+│   ├── Graph.h                 # Adjacency list + Dijkstra + edge weight update
+│   ├── Queue.h                 # Custom linked-list queue ADT
+│   ├── Initializer.h           # Builds city grid, hands to Manager
+│   ├── Manager.h               # Drives tick loop, owns vehicles, is an Observer
+│   ├── GUIObserver.h           # Native C++ bridge to managed Windows Forms
+│   └── trafficSimulation.h     # Windows Forms GUI
 │
 ├── assets/
-│   ├── UI_Screenshot.png   # Live simulation screenshot
-│   ├── UML_Diagram.png     # UML class diagram
-│   └── Cars/               # Top-view car PNG images (car1.png - car6.png)
+│   ├── final_UI.png            # Live simulation screenshot
+│   ├── UML.png                 # UML class diagram
+│   └── Cars/                   # Top-view car PNG images (car1.png - car6.png)
 │
 ├── docs/
-│   ├── Project_Report.docx # Full project report
-│   └── DS_Project.pdf      # Original problem statement
+│   ├── DS_Project_Report.docx
+│   └── DS_Problem_Document.pdf          # Original problem statement
 │
 └── README.md
 ```
@@ -107,17 +107,17 @@ Traffic-Flow-Optimization-System/
 
 ## ⏱️ Time Complexity
 
-| Function | Complexity |
-|---|---|
-| `Dijkstra (shortestPath)` | O(V²) |
-| `syncWeights()` | O(E) |
-| `updateVehicles()` | O(N) |
-| `rerouteVehicles()` | O(N × V²) |
-| `Road::tick()` | O(μ) ≈ O(1) |
-| `Intersection::tick()` | O(in-degree) |
-| `Manager::tick()` | O(N × V²) |
-| `calcObjective()` | O(E) |
-| `buildCity()` | O(V + E) |
+| Function | Complexity | Notes |
+|---|---|---|
+| `Dijkstra (shortestPath)` | O(V²) | Linear scan, V=36 nodes |
+| `syncWeights()` | O(E) | One pass over all roads |
+| `updateVehicles()` | O(N) | One pass over all vehicles |
+| `rerouteVehicles()` | O(N × V²) | Dijkstra per active vehicle |
+| `Road::tick()` | O(μ) ≈ O(1) | μ = small discharge constant |
+| `Intersection::tick()` | O(in-degree) | Scan incoming roads for max Q |
+| `Manager::tick()` | O(N × V²) | Dominated by rerouting |
+| `calcObjective()` | O(E) | One pass over all roads |
+| `buildCity()` | O(V + E) | One-time setup only |
 
 For V=36, E=120, N vehicles: each full tick ≈ 1296N operations — well within 100ms budget.
 
@@ -126,7 +126,7 @@ For V=36, E=120, N vehicles: each full tick ≈ 1296N operations — well within
 ## 🖥️ How to Run
 
 ### Requirements
-- Visual Studio 2022 (or later)
+- Visual Studio 2022 or later
 - Windows OS
 - .NET Framework (for Windows Forms)
 - C++/CLI support enabled in Visual Studio
@@ -142,6 +142,7 @@ git clone https://github.com/YOUR_USERNAME/Traffic-Flow-Optimization-System.git
 5. Build and run (`Ctrl + F5`)
 
 ### Controls
+
 | Action | How |
 |---|---|
 | Start simulation | Click **Start** button |
@@ -150,7 +151,7 @@ git clone https://github.com/YOUR_USERNAME/Traffic-Flow-Optimization-System.git
 | Add a vehicle | Select Source & Destination → **Add Vehicle** |
 | Edit intersection | Click on intersection node → edit Tg → **Apply** |
 | Edit road | Click on a road → edit properties → **Apply** |
-| Zoom in/out | `+` and `-` buttons (top right of city panel) |
+| Zoom in / out | `+` and `-` buttons (top right of city panel) |
 | Pan map | Right-click and drag on city panel |
 | Vehicle info | Hover mouse over any vehicle |
 
@@ -164,19 +165,19 @@ git clone https://github.com/YOUR_USERNAME/Traffic-Flow-Optimization-System.git
 | **Queue** | Linked List (`Queue<T>`) | Vehicle queues at intersections |
 | **List** | `std::list` | Observer list, vehicle list, route list |
 
-> **Note:** `Graph` and `Queue` are custom implementations. `std::list` is used only for internal utility containers.
+> **Note:** `Graph` and `Queue` are fully custom implementations. `std::list` is used only for internal utility containers where grading does not apply.
 
 ---
 
 ## 🎨 Design Patterns
 
 ### Observer Pattern
-- `Road` and `Intersection` are **Subjects** — they notify observers when their state changes
+- `Road` and `Intersection` are **Subjects** — notify observers when state changes
 - `Manager` is an **Observer** — rereroutes vehicles when congestion changes
 - `GUIObserver` is an **Observer** — redraws the city panel when any road updates
 
 ### Why Observer?
-The backend has **zero dependency on the GUI**. The simulation can run headlessly, and any number of observers can be attached without modifying Road or Intersection code.
+The backend has **zero dependency on the GUI**. The simulation can run headlessly, and any number of observers can be attached without modifying `Road` or `Intersection` code.
 
 ---
 
@@ -191,15 +192,15 @@ The backend has **zero dependency on the GUI**. The simulation can run headlessl
 
 ## 👨‍💻 Team
 
-| Name | CMS ID |
-|---|---|
-| Azeem Ashraf| 504116 |
-| Muhammad Umer Shahzad| 507904 |
-| Muzammil Hussain | 533058 |
+| Sr. | Name | CMS ID |
+|---|---|---|
+| 1 | Azeem Ashraf | 504116 |
+| 2 | Muhammad Umer Shahzad | 507904 |
+| 3 | Muzammil Hussain | 533058 |
 
-**Instructor:** Ma'am Anum  
-**Institution:** NUST CEME, Rawalpindi  
-**Course:** Data Structures  
+**Instructor:** Ma'am Anum
+**Institution:** NUST CEME, Rawalpindi
+**Course:** Data Structures
 
 ---
 
